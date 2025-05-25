@@ -1,7 +1,7 @@
 # Tugas ETS Pemrograman Jaringan
 ## Daftar Isi
-- [Soal](https://github.com/itozt/tugasETSProgjar/tree/main#-soal)
-- [Kegunaan Masing-Masing File]()
+- [Soal](https://github.com/itozt/tugasETSProgjar/tree/main#soal)
+- [Kegunaan Masing-Masing File](https://github.com/itozt/tugasETSProgjar/tree/main#kegunaan-masing-masing-file)
 - [Arsitektur / Alur Kerja](https://github.com/itozt/tugasETSProgjar/tree/main#-arsitektur-alur-kerja)
 - [Diagram Arsitektur / Alur Kerja](https://github.com/itozt/tugasETSProgjar/tree/main#-diagram-arsitektur-alur-kerja)
 - Penjelasan Tiap File
