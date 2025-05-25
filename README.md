@@ -136,7 +136,7 @@ Berikut alur kerja detail saat menjalankan stress test, beserta file yang berper
    3. Mengembalikan `json.dumps(...)` dari hasil operasi. <br>
    Catatan: pada file_server.py, alur ini implicit—server membaca string, lalu menyalurkannya ke logika sendiri. Jika Anda ingin menggunakan `FileProtocol`, Anda bisa mengganti blok parsing di `file_server.py` dengan panggilan ke `FileProtocol.proses_string`.
 7. **Operasi File Sistem** <br>
-   File : `file_interface.py`
+   File : `file_interface.py` <br>
    Method :
    - `list(self)` → glob('*.*') di folder files/
    - `get(self, [filename])` → buka & baca, encode base64
@@ -145,14 +145,14 @@ Berikut alur kerja detail saat menjalankan stress test, beserta file yang berper
   Output: dict `{status, data...}`
 8. **Agregasi Hasil & Pelaporan** <br>
    File : `file_client_cli_test.py` (lanjutan di stress_test) <br>
-   Yang Dicatat :
-   - `waktu_total` (seluruh batch), waktu_rata per client
-   - `throughput` = total_bytes / waktu_total
-   - `jumlah_sukses, jumlah_gagal` di client
-   - `worker_server` (diisi manual sebagai parameter) <br>
-   Output :
-   - Print ringkasan di console
-   - Append satu baris ke CSV (`laporan_stress_test.csv`) dengan header dan data metrik
+   - Yang Dicatat :
+     - `waktu_total` (seluruh batch), waktu_rata per client
+     - `throughput` = total_bytes / waktu_total
+     - `jumlah_sukses, jumlah_gagal` di client
+     - `worker_server` (diisi manual sebagai parameter) <br>
+   - Output :
+     - Print ringkasan di console
+     - Append satu baris ke CSV (`laporan_stress_test.csv`) dengan header dan data metrik
 
 # 🌲 Diagram Arsitektur Alur Kerja
 ![Arsitektur Alur Kerja](https://github.com/user-attachments/assets/b8f73562-07dd-4067-835d-3480f1be7f43)
