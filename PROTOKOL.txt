@@ -1,0 +1,66 @@
+FILE SERVER
+TUJUAN: melayani client dalam request file server
+
+ATURAN PROTOKOL:
+- client harus mengirimkan request dalam bentuk string
+- string harus dalam format
+  REQUEST spasi PARAMETER
+- PARAMETER dapat berkembang menjadi PARAMETER1 spasi PARAMETER2 dan seterusnya
+
+REQUEST YANG DILAYANI:
+- informasi umum:
+  * Jika request tidak dikenali akan menghasilkan pesan
+    - status: ERROR
+    - data: request tidak dikenali
+  * Semua result akan diberikan dalam bentuk JSON dan diakhiri
+    dengan character ascii code #13#10#13#10 atau "\r\n\r\n"
+
+LIST
+* TUJUAN: untuk mendapatkan daftar seluruh file yang dilayani oleh file server
+* PARAMETER: tidak ada
+* RESULT:
+- BERHASIL:
+  - status: OK
+  - data: list file
+- GAGAL:
+  - status: ERROR
+  - data: pesan kesalahan
+
+GET
+* TUJUAN: untuk mendapatkan isi file dengan menyebutkan nama file dalam parameter
+* PARAMETER:
+  - PARAMETER1 : nama file
+* RESULT:
+- BERHASIL:
+  - status: OK
+  - data_namafile : nama file yang diminta
+  - data_file : isi file yang diminta (dalam bentuk base64)
+- GAGAL:
+  - status: ERROR
+  - data: pesan kesalahan
+
+DELETE
+* TUJUAN: untuk menghapus file yang tersedia
+* PARAMETER: nama file
+* RESULT:
+- BERHASIL:
+  - status: OK 
+  - data: nama file yang dihapus
+- GAGAL:
+  - status: ERROR
+  - data: pesan kesalahan (File not found)
+* PENJELASAN TAMBAHAN:
+Fungsi delete pada FileInterface bekerja dengan mengambil nama file dari parameter pertama (params[0]), lalu memeriksa keberadaan file tersebut di direktori kerja menggunakan os.path.exists(). Jika file ditemukan, metode os.remove() dipanggil untuk menghapus file, dan fungsi mengembalikan kamus (dict) dengan status='OK' serta pesan konfirmasi bahwa file berhasil dihapus. Apabila file tidak ada, fungsi akan mengembalikan status='ERROR' dengan keterangan “File not found”. Seluruh proses dilindungi blok try...except untuk menangkap dan melaporkan kesalahan lain (misalnya perizinan) sebagai status='ERROR' beserta detail pengecualian.
+
+UPLOAD
+* TUJUAN: mengupload file dengan membuat file baru dan mmengirimkan isi dile tersebut dalm encode base64
+* PARAMETER: nama file dan isi file dalam encode basse64
+* RESULT:
+- BERHASIL:
+  - status: OK
+  - data: nama file yang dibentuk/diupload
+- GAGAL:
+  - status: ERROR
+  - data: pesan kesalahan
+* PENJELASAN TAMBAHAN:
+Fungsi upload memulai dengan membaca nama file yang ingin diunggah dari params[0] dan langsung memeriksa apakah file tersebut sudah ada. Jika sudah ada, fungsi segera mengembalikan status='OK' tanpa menimpa file lama. Jika belum, sisa parameter (params[1:]) dianggap sebagai potongan string Base64, digabung kembali menjadi satu string dengan " ".join(), lalu didekode menjadi bytes menggunakan base64.b64decode(). Hasil dekode kemudian ditulis ke disk dengan membuka file dalam mode tulis (open(filename, 'w')) dan memanggil f.write(filedata). Jika semua langkah berhasil, fungsi mengembalikan status='OK' dan pesan sukses; jika terjadi kesalahan (misalnya data Base64 tidak valid atau masalah izin), blok except menangkap pengecualian dan mengembalikan status='ERROR' beserta penjelasan kesalahan.
