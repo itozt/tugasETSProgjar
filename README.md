@@ -332,7 +332,7 @@ File ini digunakan oleh `file_server.py`.
         upload_file(server_ip, server_port, file_path)
         download_file(server_ip, server_port, file_path)
   ```
-- **Bagian if __name__ == '__main__':** <br>
+- **Bagian `if __name__ == '__main__':`** <br>
   Menjalankan stress test lokal ke server di `127.0.0.1:9000` <br>
   File `testfile.txt` akan diupload dan didownload oleh 5 thread
   ``` py
