@@ -156,3 +156,69 @@ Berikut alur kerja detail saat menjalankan stress test, beserta file yang berper
 
 # 🌲 Diagram Arsitektur Alur Kerja
 ![Arsitektur Alur Kerja](https://github.com/user-attachments/assets/b8f73562-07dd-4067-835d-3480f1be7f43)
+
+# 🌲 Penjelasan Tiap File
+## ✨ file_server.py
+**Tujuan** : Menerima koneksi dari klien. Menerima perintah seperti LIST, UPLOAD, DOWNLOAD. Memproses perintah dan mengirim respons kembali ke klien
+- **Inisialisasi dan Konstanta**
+  - Menentukan alamat dan port server
+  - Menetapkan folder penyimpanan file server
+  ``` py
+  SERVER_HOST = '0.0.0.0'
+  SERVER_PORT = 9000
+  SERVER_STORAGE = './server_storage'
+  ```
+- **Fungsi handle_client(client_socket, client_address)** <br>
+  Menangani 1 klien. Menerima perintah, proses, dan kirim balasan.
+  ``` py
+  def handle_client(client_socket, client_address):
+    while True:
+        data = client_socket.recv(1024)
+        ...
+        if command == 'LIST':
+            ...
+        elif command == 'UPLOAD':
+            ...
+        elif command == 'DOWNLOAD':
+            ...
+  ```
+- **Perintah LIST** <br>
+  Kirim daftar file dalam folder server.
+  ``` py
+  if command == 'LIST':
+    files = os.listdir(SERVER_STORAGE)
+    response = '\n'.join(files) + '\r\n\r\n'
+    client_socket.sendall(response.encode())
+  ```
+- **Perintah UPLOAD** <br>
+  Menerima file dari klien dan simpan ke server.
+  ``` py
+  elif command == 'UPLOAD':
+    filename = parts[1]
+    filesize = int(parts[2])
+    filepath = os.path.join(SERVER_STORAGE, filename)
+    with open(filepath, 'wb') as f:
+        ...
+  ```
+- **Perintah DOWNLOAD** <br>
+  Kirim ukuran dan isi file ke klien.
+  ``` py
+  elif command == 'DOWNLOAD':
+    filename = parts[1]
+    filepath = os.path.join(SERVER_STORAGE, filename)
+    filesize = os.path.getsize(filepath)
+    client_socket.sendall(f"{filesize}\r\n".encode())
+    ...
+  ```
+-  **Main Server Loop** <br>
+   Membuka socket TCP dan menerima banyak klien secara paralel (threading).
+   ``` py
+   def start_server():
+    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server_socket.bind((SERVER_HOST, SERVER_PORT))
+    ...
+    while True:
+        client_socket, client_address = server_socket.accept()
+        ...
+        threading.Thread(target=handle_client, ...).start()
+   ````
