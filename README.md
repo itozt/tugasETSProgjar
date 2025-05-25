@@ -301,10 +301,7 @@ File ini digunakan oleh `file_server.py`.
 
 ## ✨ file_client_cli_test.py
 `file_client_cli_test.py` digunakan untuk melakukan **stress test (pengujian beban)** pada aplikasi client-server file transfer.
-**Tujuan :**  
-- Menjalankan beberapa client secara paralel
-- Mencoba upload dan download file secara terus-menerus
-- Mengukur kecepatan dan ketahanan server saat melayani banyak request
+**Tujuan :**  Menjalankan beberapa client secara paralel. Mencoba upload dan download file secara terus-menerus. Mengukur kecepatan dan ketahanan server saat melayani banyak request
     
 - **Import dan Setup** <br>
   Menggunakan fungsi upload_file() dan download_file() dari file_client.py.
@@ -347,3 +344,5 @@ File ini digunakan oleh `file_server.py`.
 
     stress_test(server_ip, server_port, num_threads, file_path)
   ```
+
+# 🌲 Cara Pengerjaan
