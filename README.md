@@ -5,8 +5,8 @@
 - [Arsitektur / Alur Kerja](https://github.com/itozt/tugasETSProgjar/tree/main#-arsitektur-alur-kerja)
 - [Diagram Arsitektur / Alur Kerja](https://github.com/itozt/tugasETSProgjar/tree/main#-diagram-arsitektur-alur-kerja)
 - Penjelasan Tiap File
-  - [file_server.py](https://github.com/itozt/tugasETSProgjar/blob/main/README.md#-file_serverpy)
-  - [file_interface.py]()
+  - [file_server.py](https://github.com/itozt/tugasETSProgjar/tree/main#-file_serverpy)
+  - [file_interface.py](https://github.com/itozt/tugasETSProgjar/tree/main#-file_interfacepy)
   - [file_protocol.py]()
   - [file_client_cli_test]()
 - [Cara Pengerjaan]()
