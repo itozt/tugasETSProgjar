@@ -7,7 +7,7 @@
 - Penjelasan Tiap File
   - [file_server.py](https://github.com/itozt/tugasETSProgjar/tree/main#-file_serverpy)
   - [file_interface.py](https://github.com/itozt/tugasETSProgjar/tree/main#-file_interfacepy)
-  - [file_protocol.py]()
+  - [file_protocol.py](https://github.com/itozt/tugasETSProgjar/tree/main#-file_protocolpy)
   - [file_client_cli_test]()
 - [Cara Pengerjaan]()
 
@@ -259,4 +259,91 @@ File ini digunakan oleh file_client.py untuk komunikasi dengan server. <br>
     ...
     with open(filepath, 'wb') as f:
         ...
+  ```
+
+## ✨ file_protocol.py
+`file_protocol.py` berfungsi untuk menangani protokol komunikasi antar client dan server, yaitu :
+- Parsing perintah seperti `LIST, UPLOAD, DOWNLOAD`
+- Membaca dan memproses input dari client
+- Membuat respon standar sesuai protokol <br>
+
+File ini digunakan oleh `file_server.py`.
+- **Fungsi `read_request(conn)`** <br>
+  Membaca request dari client sampai menemukan \r\n.
+  ``` py
+  def read_request(conn):
+    data = b''
+    while not data.endswith(b'\r\n'):
+        part = conn.recv(1024)
+        if not part:
+            break
+        data += part
+    return data.decode().strip()
+  ```
+- **Fungsi `parse_request(request)`** <br>
+  Memecah request menjadi : `command` (misalnya: UPLOAD) dan argumen (misalnya: nama file dan ukuran).
+  ``` py
+  def parse_request(request):
+    parts = request.split()
+    if not parts:
+        return None, None
+    return parts[0], parts[1:]
+  ```
+- **Fungsi send_response(conn, status_code, message)** <br>
+  Mengirim respon balik ke client dalam format :<br>
+  `<kode> <pesan>\r\n` <br>
+  Contoh : `200 OK\r\n`
+  ``` py
+  def send_response(conn, status_code, message):
+    response = f"{status_code} {message}\r\n"
+    conn.sendall(response.encode())
+  ```
+
+## ✨ file_client_cli_test.py
+`file_client_cli_test.py` digunakan untuk melakukan **stress test (pengujian beban)** pada aplikasi client-server file transfer.
+**Tujuan :**  
+  - Menjalankan beberapa client secara paralel
+  - Mencoba upload dan download file secara terus-menerus
+  - Mengukur kecepatan dan ketahanan server saat melayani banyak request
+    
+- **Import dan Setup** <br>
+  Menggunakan fungsi upload_file() dan download_file() dari file_client.py.
+  ``` py
+  import threading
+  import time
+  from file_client import upload_file, download_file
+  ```
+- **Fungsi `stress_test()`** <br>
+  Membuat dan menjalankan beberapa thread client. Masing-masing thread menjalankan client_task() (upload & download).
+  ``` py
+  def stress_test(server_ip, server_port, num_threads, file_path):
+    threads = []
+
+    for _ in range(num_threads):
+        t = threading.Thread(target=client_task, args=(server_ip, server_port, file_path))
+        t.start()
+        threads.append(t)
+
+    for t in threads:
+        t.join()
+  ```
+- **Fungsi `client_task()`** <br>
+  Fungsi yang dijalankan tiap thread : Melakukan upload dan download sebanyak 10 kali per thread
+  ``` py
+  def client_task(server_ip, server_port, file_path):
+    for _ in range(10):
+        upload_file(server_ip, server_port, file_path)
+        download_file(server_ip, server_port, file_path)
+  ```
+- **Bagian if __name__ == '__main__':** <br>
+  Menjalankan stress test lokal ke server di `127.0.0.1:9000` <br>
+  File `testfile.txt` akan diupload dan didownload oleh 5 thread
+  ``` py
+  if __name__ == '__main__':
+    server_ip = '127.0.0.1'
+    server_port = 9000
+    num_threads = 5
+    file_path = 'testfile.txt'
+
+    stress_test(server_ip, server_port, num_threads, file_path)
   ```
