@@ -149,9 +149,9 @@ def jalankan_semua_stress_test(server_ip, server_port, pool_mode, output_csv):
     """Menjalankan semua kombinasi stress test"""
     operasi_list = ['upload', 'download']
     volume_list = {
-        10: "10MB-TESTFILE.ORG.pdf",
-        50: "50MB-TESTFILE.ORG.pdf",
-        100: "100MB-TESTFILE.ORG.pdf"
+        10: "10MB.pdf",
+        50: "50MB.pdf",
+        100: "100MB.pdf"
     }
     client_worker_list = [1, 5, 50]
     server_worker_list = [1, 5, 50]
