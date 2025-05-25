@@ -5,7 +5,7 @@
 - [Arsitektur / Alur Kerja](https://github.com/itozt/tugasETSProgjar/tree/main#-arsitektur-alur-kerja)
 - [Diagram Arsitektur / Alur Kerja](https://github.com/itozt/tugasETSProgjar/tree/main#-diagram-arsitektur-alur-kerja)
 - Penjelasan Tiap File
-  - [file_server.py]()
+  - [file_server.py](https://github.com/itozt/tugasETSProgjar/blob/main/README.md#-file_serverpy)
   - [file_interface.py]()
   - [file_protocol.py]()
   - [file_client_cli_test]()
@@ -222,3 +222,41 @@ Berikut alur kerja detail saat menjalankan stress test, beserta file yang berper
         ...
         threading.Thread(target=handle_client, ...).start()
    ````
+## ✨ file_interface.py
+file_interface.py adalah interface penghubung antara client dengan server. <br>
+File ini digunakan oleh file_client.py untuk komunikasi dengan server. <br>
+**Tujuan** : Menghubungkan ke server. Mengirim perintah LIST, UPLOAD, DOWNLOAD. Menerima respon dari server 
+- **Fungsi `connect(server_ip, server_port)`** <br>
+  Membuka koneksi TCP ke server, mengembalikan objek socket.
+  ``` py
+  def connect(server_ip, server_port):
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.connect((server_ip, server_port))
+    return s
+  ```
+- **Fungsi `list_files(sock)`** <br>
+  Mengirim perintah LIST ke server untuk meminta daftar file.
+  ``` py
+  def list_files(sock):
+    sock.sendall(b'LIST\r\n')
+    ...
+    return response.split('\n')
+  ```
+- **Fungsi `upload_file(sock, filepath)`** <br>
+  Mengirim file ke server dengan : Nama file, ukuran file, isi file
+  ``` py
+  def upload_file(sock, filepath):
+    filename = os.path.basename(filepath)
+    filesize = os.path.getsize(filepath)
+    sock.sendall(f"UPLOAD {filename} {filesize}\r\n".encode())
+    ...
+  ```
+- **Fungsi `download_file(sock, filename, dest_folder)`** <br>
+  Meminta file dari server dan menyimpannya ke folder lokal.
+  ``` py
+  def download_file(sock, filename, dest_folder):
+    sock.sendall(f"DOWNLOAD {filename}\r\n".encode())
+    ...
+    with open(filepath, 'wb') as f:
+        ...
+  ```
