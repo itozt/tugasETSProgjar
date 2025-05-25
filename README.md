@@ -1,9 +1,9 @@
 # Tugas ETS Pemrograman Jaringan
 ## Daftar Isi
-- [Soal]()
+- [Soal](https://github.com/itozt/tugasETSProgjar/tree/main#-soal)
 - [Kegunaan Masing-Masing File]()
-- [Arsitektur / Alur Kerja]()
-- [Diagram Arsitektur / Alur Kerja]()
+- [Arsitektur / Alur Kerja](https://github.com/itozt/tugasETSProgjar/tree/main#-arsitektur-alur-kerja)
+- [Diagram Arsitektur / Alur Kerja](https://github.com/itozt/tugasETSProgjar/tree/main#-diagram-arsitektur-alur-kerja)
 - Penjelasan Tiap File
   - [file_server.py]()
   - [file_interface.py]()
